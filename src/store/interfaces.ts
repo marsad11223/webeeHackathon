@@ -7,8 +7,9 @@ export interface RootState {
 }
 
 export interface Category {
-  id: number;
+  id: string;
   name: string;
+  [key: string]: Date | string | boolean | number;
 }
 
 export interface CategoryState {

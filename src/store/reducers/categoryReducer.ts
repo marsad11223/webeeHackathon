@@ -33,7 +33,7 @@ const categorySlice = createSlice({
         category.name = name;
       }
     },
-    deleteCategory: (state, action: PayloadAction<number>) => {
+    deleteCategory: (state, action: PayloadAction<string>) => {
       const categoryId = action.payload;
       state.categories = state.categories.filter((category) => category.id !== categoryId);
     },
