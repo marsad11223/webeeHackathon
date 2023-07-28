@@ -50,7 +50,9 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
         }}
       />
     } else if (type === 'boolean') {
+      const boolValue = item[key] === true;
       return <Switch
+        value={boolValue}
         onToggle={e => {
           dispatch(updateItem({
             categoryId: category?.id || '',
