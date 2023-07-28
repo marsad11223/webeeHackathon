@@ -21,7 +21,6 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
 
   const dispatch = useAppDispatch();
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(false);
-  const [date, setDate] = useState<string>('');
   const title = category ? getTitle(category?.titleField, attributes) : '';
 
   const showDatePicker = () => {
@@ -32,8 +31,8 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = (date: Date) => {
-    setDate(moment(date).format('MM.DD.YYYY'));
+  const handleConfirm = (key: string, date: Date) => {
+    updateField(key, moment(date).format('MM.DD.YYYY'))
     hideDatePicker();
   };
 
@@ -55,7 +54,6 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
   }
 
   const getInputField = (type: string, key: string) => {
-    console.log(type, 'typetype');
 
     if (type === 'string') {
       return <Input
@@ -64,6 +62,7 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
         onChangeText={e => {
           updateField(key, e)
         }}
+        value={item[key] ? item[key].toString() : ''}
       />
     } else if (type === 'number') {
       return <Input
@@ -73,6 +72,7 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
         onChangeText={e => {
           updateField(key, parseFloat(e))
         }}
+        value={item[key] ? item[key].toString() : ''}
       />
     } else if (type === 'boolean') {
       const boolValue = item[key] === true;
@@ -86,13 +86,13 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
       return <View>
         <TouchableOpacity onPress={showDatePicker} style={styles.dateInput}>
           <Text style={{ marginLeft: 10 }}>
-            {date === '' ? 'select date' : date}
+            {item[key] ? item[key].toString() : 'select date'}
           </Text>
         </TouchableOpacity>
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="date"
-          onConfirm={handleConfirm}
+          onConfirm={(e) => handleConfirm(key, e)}
           onCancel={hideDatePicker}
         />
       </View>
@@ -101,7 +101,7 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
 
   return (
     <View style={styles.container}>
-      <Text style={styles.categoryLabel}>{title}</Text>
+      <Text style={styles.categoryLabel}>{item[title] ? item[title].toString() : 'UNNAMED FIELD'}</Text>
 
       {attributes.map((attributes, index) => {
         return (
