@@ -54,25 +54,46 @@ const categorySlice = createSlice({
       const categoryIndex = state.categories.findIndex((category) => category.id === categoryId);
       if (categoryIndex >= 0) {
         const category = state.categories[categoryIndex];
-        const attributes = category.attributes.filter((attribute) => attribute.id !== attributeId);
+
+        let name = ''
+        const attributes = category.attributes.filter((attribute) => {
+          if (attribute.id !== attributeId) {
+            return attribute
+          } else {
+            name = attribute.name
+          }
+        });
+
+        state.categories[categoryIndex].items.forEach(item => {
+          if (item.hasOwnProperty(name)) {
+            delete item[name];
+          }
+        });
         state.categories[categoryIndex] = { ...category, attributes };
       }
+
     },
     updateAttribute: (
       state,
       action: PayloadAction<{ categoryId: string, attributeId: string, attributeKey: string, attributeValue: string }>
     ) => {
       const { categoryId, attributeId, attributeKey, attributeValue } = action.payload;
+
       const categoryIndex = state.categories.findIndex((category) => category.id === categoryId);
       if (categoryIndex >= 0) {
         const category = state.categories[categoryIndex];
         const attributes = category.attributes.map((attribute) => {
           if (attribute.id === attributeId) {
+            state.categories[categoryIndex].items.forEach(item => {
+              if (item.hasOwnProperty(attribute.name)) {
+                item[attributeValue] = item[attribute.name];
+                delete item[attribute.name];
+              }
+            });
             return { ...attribute, [attributeKey]: attributeValue };
           }
           return attribute;
         });
-
         state.categories[categoryIndex] = { ...category, attributes };
       }
     },
