@@ -1,12 +1,13 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { View, Text, Input, Switch } from 'native-base';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, Input, Switch } from 'native-base';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-import InputField from './InputField';
 import { useAppDispatch } from '../store/hooks';
 import { Category, Item, Attribute } from '../store/interfaces';
-import { getId, getTitle } from '../utilities/helper';
+import { getId, getTitle, hp } from '../utilities/helper';
 import { updateItem } from '../store/reducers/categoryReducer';
+import moment from 'moment';
 
 type ItemTypes = {
   item: Item,
@@ -18,7 +19,22 @@ type ItemTypes = {
 const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index }) => {
 
   const dispatch = useAppDispatch();
+  const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(false);
+  const [date, setDate] = useState<string>('');
   const title = category ? getTitle(category?.titleField, attributes) : '';
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date: Date) => {
+    setDate(moment(date).format('MM.DD.YYYY'));
+    hideDatePicker();
+  };
 
   const updateField = (key: string, value: string | boolean | Date | number) => {
     dispatch(updateItem({
@@ -30,6 +46,8 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
   }
 
   const getInputField = (type: string, key: string) => {
+    console.log(type, 'typetype');
+
     if (type === 'string') {
       return <Input
         size={'lg'}
@@ -55,6 +73,20 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
           updateField(key, e)
         }}
       />
+    } else if (type === 'Date') {
+      return <View>
+        <TouchableOpacity onPress={showDatePicker} style={styles.dateInput}>
+          <Text style={{ marginLeft: 10 }}>
+            {date === '' ? 'select date' : date}
+          </Text>
+        </TouchableOpacity>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+        />
+      </View>
     }
   }
 
@@ -92,7 +124,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 7,
   },
-
+  dateInput: {
+    height: hp(30),
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'grey',
+    justifyContent: 'center'
+  },
 });
 
 export default ItemComponent;
