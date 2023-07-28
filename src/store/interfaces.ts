@@ -5,20 +5,17 @@ export interface RootState {
     error: string | null;
   };
 }
-
 export interface Attribute {
   id: string;
   name: string;
   type: string;
 }
-
 export interface Category {
   id: string;
   name: string;
   titleField: string;
   attributes: Attribute[];
 }
-
 export interface CategoryState {
   categories: Category[];
   loading: boolean;

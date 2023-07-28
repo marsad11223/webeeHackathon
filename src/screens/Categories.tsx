@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 
 import PrimaryButton from '../components/PrimaryButton';
+import CategoryComponent from '../components/CategoryComponent';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { getId, hp, wp } from '../Utilities/helper';
 import { createCategory } from '../store/reducers/categoryReducer';
 import { Category } from '../store/interfaces';
-import CategoryComponent from '../components/CategoryComponent';
 
 const Categories: React.FC = () => {
   const { categories } = useAppSelector(state => state.category)
@@ -35,7 +35,6 @@ const Categories: React.FC = () => {
           title={'ADD A CATEGEORY'}
           onPress={() => {
             const attributeId = getId();
-
             dispatch(createCategory({
               id: getId(),
               name: 'New Catageory',

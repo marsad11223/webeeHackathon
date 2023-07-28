@@ -66,6 +66,7 @@ const CategoryComponent: React.FC<CategoryTypes> = ({
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{item.name}</Text>
+
       <InputField
         onChange={(e) => { updateCategeory(id, 'name', e) }}
         value={name.toString()}
@@ -106,6 +107,7 @@ const CategoryComponent: React.FC<CategoryTypes> = ({
           </Button>
         </View>
       ))}
+
       <TypesPopover
         data={attributes}
         onPress={(type: string) => {
@@ -113,6 +115,7 @@ const CategoryComponent: React.FC<CategoryTypes> = ({
         }}>
         <PrimaryButton title={`TITLE FIELD: ${getTitle()}`} />
       </TypesPopover>
+
       <TypesPopover
         onPress={(type: string) => {
           dispatch(addAttribute({
@@ -126,7 +129,11 @@ const CategoryComponent: React.FC<CategoryTypes> = ({
         }}>
         <PrimaryButton title='ADD NEW FIELD' />
       </TypesPopover>
-      <PrimaryButton title='REMMOVE Categeory' backgroundColor='red.500' onPress={() => { deleteCat(id) }} />
+      <PrimaryButton
+        title='REMMOVE Categeory'
+        backgroundColor='red.500'
+        onPress={() => { deleteCat(id) }}
+      />
     </View >
   );
 };

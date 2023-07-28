@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Text, Popover, Box, VStack } from 'native-base';
+
 import { types, wp } from '../Utilities/helper';
 
 type popoverTypes = {
