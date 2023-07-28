@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button } from 'native-base'
-import { hp } from '../Utilities/helper';
+import { hp } from '../utilities/helper';
 
 type PrimaryButtonTypes = {
   onPress?: () => void;

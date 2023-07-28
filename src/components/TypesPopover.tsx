@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Text, Popover, Box, VStack } from 'native-base';
 
-import { types, wp } from '../Utilities/helper';
+import { types, wp } from '../utilities/helper';
 
 type popoverTypes = {
   onPress: (type: string) => void,

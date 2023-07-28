@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, FlatList } from 'react-native';
 import PrimaryButton from '../components/PrimaryButton';
 import CategoryComponent from '../components/CategoryComponent';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { getId, hp, wp } from '../Utilities/helper';
+import { getId, hp, wp } from '../utilities/helper';
 import { createCategory } from '../store/reducers/categoryReducer';
 import { Category } from '../store/interfaces';
 

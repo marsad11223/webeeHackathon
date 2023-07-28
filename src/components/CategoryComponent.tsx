@@ -6,7 +6,7 @@ import PrimaryButton from './PrimaryButton';
 import TypesPopover from './TypesPopover';
 import InputField from './InputField';
 import { useAppDispatch } from '../store/hooks';
-import { getId, types } from '../Utilities/helper';
+import { getId, types } from '../utilities/helper';
 import { Category } from '../store/interfaces';
 import {
   addAttribute,
