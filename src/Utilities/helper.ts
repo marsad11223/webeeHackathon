@@ -17,6 +17,6 @@ interface TypeMap {
 export const types: TypeMap = {
   string: 'Text',
   number: 'Number',
-  boolean: 'CheckBoxes',
+  boolean: 'CheckBox',
   Date: 'Date'
 }

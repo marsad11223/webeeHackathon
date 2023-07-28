@@ -15,6 +15,7 @@ export interface Attribute {
 export interface Category {
   id: string;
   name: string;
+  titleField: string;
   attributes: Attribute[];
 }
 

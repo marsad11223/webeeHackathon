@@ -3,30 +3,31 @@ import { StyleSheet } from 'react-native';
 import { View, Input } from 'native-base';
 
 type InputFieldTypes = {
-  key?: string,
   value?: string,
   width?: string,
-  onChange?: () => void
+  onChange?: (e: string) => void,
+  placeholder?: string
 };
 
 const InputField = ({
-  key,
   value = '',
   width = '100%',
-  onChange = () => { }
+  onChange = (e) => { },
+  placeholder = 'Field'
 }: InputFieldTypes) => {
   return (
     <View style={{
-      ...styles.inputContainer, width: width
+      ...styles.inputContainer,
+      width: width
     }}
-      key={key}
     >
       <Input
         size={'lg'}
         variant="filled"
         style={styles.input}
         value={value}
-        onChangeText={onChange}
+        onChangeText={(e) => onChange(e)}
+        placeholder={placeholder}
       />
     </View>
   )

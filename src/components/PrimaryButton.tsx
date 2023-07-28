@@ -1,15 +1,18 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Button } from 'native-base'
+import { hp } from '../Utilities/helper';
 
 type PrimaryButtonTypes = {
   onPress?: () => void;
   title?: string;
+  backgroundColor?: string
 };
 
 const PrimaryButton: React.FC<PrimaryButtonTypes> = ({
   onPress,
   title = '',
+  backgroundColor
 }) => {
 
   return (
@@ -18,6 +21,7 @@ const PrimaryButton: React.FC<PrimaryButtonTypes> = ({
       size={'sm'}
       onPress={onPress}
       disabled={!onPress}
+      backgroundColor={backgroundColor}
     >
       {title}
     </Button>
@@ -26,7 +30,7 @@ const PrimaryButton: React.FC<PrimaryButtonTypes> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: hp(5),
   },
 });
 

@@ -1,94 +1,133 @@
-import React, { JSXElementConstructor, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { View, Text, Button, Popover, Box, VStack } from 'native-base';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { View, Text, Button } from 'native-base';
 
-import { Category } from '../store/interfaces';
-import { types, wp } from '../Utilities/helper';
 import PrimaryButton from './PrimaryButton';
+import TypesPopover from './TypesPopover';
 import InputField from './InputField';
+import { useAppDispatch } from '../store/hooks';
+import { getId, types } from '../Utilities/helper';
+import { Category } from '../store/interfaces';
+import {
+  addAttribute,
+  deleteAttribute,
+  updateAttribute,
+  deleteCategory,
+  updateCategory
+} from '../store/reducers/categoryReducer';
 
 type CategoryTypes = {
   item: Category
 };
 
-function TypesPopover({ onPress, children }: { onPress: () => void, children: any }) {
-  const [position] = useState("auto");
-  const [isOpen, setIsOpen] = useState(false);
-
-  return <Box w="100%" alignItems="center">
-    <VStack space={6} alignSelf="flex-start" w="100%">
-      <Popover // @ts-ignore
-        placement={position === "auto" ? undefined : position}
-        trigger={triggerProps => {
-          return <TouchableOpacity {...triggerProps} onPress={() => setIsOpen(true)} >
-            {children}
-          </TouchableOpacity>;
-        }}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(!isOpen)}
-      >
-        <Popover.Content style={{ width: wp(100) }}>
-          <Popover.Arrow />
-          <Popover.Body>
-            {Object.keys(types).map((key) => (
-              <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
-                <Text>{types[key]}</Text>
-              </TouchableOpacity>
-            ))}
-          </Popover.Body>
-        </Popover.Content>
-      </Popover>
-    </VStack>
-  </Box>;
-}
-
 const CategoryComponent: React.FC<CategoryTypes> = ({
   item,
 }) => {
 
-  const { id, name, attributes } = item;
+  const { id, name, titleField, attributes } = item;
+  const dispatch = useAppDispatch();
+
+  const getTitle = () => {
+    const titleAttribute = attributes.find((attribute) => attribute.id === titleField);
+    if (titleAttribute) {
+      return titleAttribute?.name !== '' ? titleAttribute.name : 'UNNAMED FIELD';
+    } else {
+      return 'UNNAMED FIELD';
+    }
+  }
+
+  const updateField = (
+    id: string,
+    attributeId: string,
+    key: string,
+    value: string
+  ) => {
+    dispatch(updateAttribute(
+      {
+        categoryId: id,
+        attributeId: attributeId,
+        attributeKey: key,
+        attributeValue: value
+      }))
+  }
+
+  const deleteField = (id: string, attributeId: string) => {
+    dispatch(deleteAttribute({ categoryId: id, attributeId: attributeId }))
+  }
+
+  const deleteCat = (id: string) => {
+    dispatch(deleteCategory(id))
+  }
+
+  const updateCategeory = (id: string, key: string, value: any) => {
+    dispatch(updateCategory({ id, key, value }))
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{item.name}</Text>
       <InputField
-        onChange={() => { }}
+        onChange={(e) => { updateCategeory(id, 'name', e) }}
         value={name.toString()}
         width={'100%'}
       />
 
-      {attributes.map(attribute => (
+      {attributes.map((attribute, index) => (
         <View style={{
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
           marginVertical: 10
-        }}>
+        }}
+          key={index}>
           <InputField
-            key={attribute.id}
-            onChange={() => { }}
+            onChange={(e) => {
+              updateField(id, attribute.id, 'name', e)
+            }}
             value={attribute.name}
             width={'60%'}
           />
 
           <View>
-            <TypesPopover onPress={() => { }}>
-              <Text> {types[typeof attribute.type]}</Text>
+            <TypesPopover onPress={(type: string) => {
+              updateField(id, attribute.id, 'type', type)
+            }}>
+              <Text> {types[attribute.type]}</Text>
             </TypesPopover>
           </View>
           <Button
             size={'sm'}
             backgroundColor={'red.500'}
-            onPress={() => console.log("Delete")}
+            onPress={() => {
+              deleteField(id, attribute.id)
+            }}
           >
             Delete
           </Button>
         </View>
       ))}
-      <TypesPopover onPress={() => { }}>
+      <TypesPopover
+        data={attributes}
+        onPress={(type: string) => {
+          updateCategeory(id, 'titleField', type)
+        }}>
+        <PrimaryButton title={`TITLE FIELD: ${getTitle()}`} />
+      </TypesPopover>
+      <TypesPopover
+        onPress={(type: string) => {
+          dispatch(addAttribute({
+            categoryId: id,
+            attribute: {
+              id: getId(),
+              name: '',
+              type: type
+            }
+          }))
+        }}>
         <PrimaryButton title='ADD NEW FIELD' />
       </TypesPopover>
-    </View>
+      <PrimaryButton title='REMMOVE Categeory' backgroundColor='red.500' onPress={() => { deleteCat(id) }} />
+    </View >
   );
 };
 

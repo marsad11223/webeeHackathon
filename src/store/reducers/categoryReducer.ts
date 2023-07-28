@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Category, CategoryState } from '../interfaces';
+import { Attribute, Category, CategoryState } from '../interfaces';
 
 const initialState: CategoryState = {
   categories: [],
@@ -25,21 +25,56 @@ const categorySlice = createSlice({
     },
     createCategory: (state, action: PayloadAction<Category>) => {
       const newCategory = action.payload;
-
       if (!state.categories.some((category) => category.id === newCategory.id)) {
         state.categories.push(newCategory);
       }
     },
-    updateCategory: (state, action: PayloadAction<Category>) => {
-      const { id, name } = action.payload;
+    updateCategory: (state, action: PayloadAction<{ id: string, key: keyof Category, value: any }>) => {
+      const { id, key, value } = action.payload;
       const category = state.categories.find((category) => category.id === id);
       if (category) {
-        category.name = name;
+        category[key] = value;
       }
     },
     deleteCategory: (state, action: PayloadAction<string>) => {
       const categoryId = action.payload;
       state.categories = state.categories.filter((category) => category.id !== categoryId);
+    },
+    addAttribute: (state, action: PayloadAction<{ categoryId: string, attribute: Attribute }>) => {
+      const { categoryId, attribute } = action.payload;
+      const categoryIndex = state.categories.findIndex((category) => category.id === categoryId);
+      if (categoryIndex >= 0) {
+        const category = state.categories[categoryIndex];
+        const attributes = [...category.attributes, attribute];
+        state.categories[categoryIndex] = { ...category, attributes };
+      }
+    },
+    deleteAttribute: (state, action: PayloadAction<{ categoryId: string, attributeId: string }>) => {
+      const { categoryId, attributeId } = action.payload;
+      const categoryIndex = state.categories.findIndex((category) => category.id === categoryId);
+      if (categoryIndex >= 0) {
+        const category = state.categories[categoryIndex];
+        const attributes = category.attributes.filter((attribute) => attribute.id !== attributeId);
+        state.categories[categoryIndex] = { ...category, attributes };
+      }
+    },
+    updateAttribute: (
+      state,
+      action: PayloadAction<{ categoryId: string, attributeId: string, attributeKey: string, attributeValue: string }>
+    ) => {
+      const { categoryId, attributeId, attributeKey, attributeValue } = action.payload;
+      const categoryIndex = state.categories.findIndex((category) => category.id === categoryId);
+      if (categoryIndex >= 0) {
+        const category = state.categories[categoryIndex];
+        const attributes = category.attributes.map((attribute) => {
+          if (attribute.id === attributeId) {
+            return { ...attribute, [attributeKey]: attributeValue };
+          }
+          return attribute;
+        });
+
+        state.categories[categoryIndex] = { ...category, attributes };
+      }
     },
   },
 });
@@ -51,6 +86,9 @@ export const {
   createCategory,
   updateCategory,
   deleteCategory,
+  addAttribute,
+  deleteAttribute,
+  updateAttribute
 } = categorySlice.actions;
 
 export default categorySlice.reducer;
