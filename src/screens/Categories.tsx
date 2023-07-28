@@ -1,24 +1,42 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
+
 import PrimaryButton from '../components/PrimaryButton';
-import useNavigate from '../hooks/useNavigation';
-import { useAppSelector } from '../store/hooks';
-import { getId } from '../Utilities/helper';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { getId, hp, wp } from '../Utilities/helper';
+import { createCategory } from '../store/reducers/categoryReducer';
+import { Category } from '../store/interfaces';
+import CategoryComponent from '../components/CategoryComponent';
 
 const Categories: React.FC = () => {
-  const { navigate } = useNavigate();
   const { categories } = useAppSelector(state => state.category)
+  const dispatch = useAppDispatch();
+
+  const renderCategory = ({ item }: { item: Category }) => (
+    <CategoryComponent item={item} />
+  );
 
   return (
     <View style={styles.container}>
-      {
-        categories.length ?
-          null
-          :
-          <Text style={styles.note}>No Categories to display</Text>
+      {categories.length ?
+        <View style={{
+        }}>
+          <FlatList
+            data={categories}
+            renderItem={renderCategory}
+            keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
+          />
+        </View> :
+        <Text style={styles.note}>No Categories to display</Text>
       }
       <View style={styles.buttonContainer}>
-        <PrimaryButton title={'ADD A CATEGEORY'} onPress={() => { navigate('Categories') }} />
+        <PrimaryButton
+          title={'ADD A CATEGEORY'}
+          onPress={() => {
+            dispatch(createCategory({ id: getId(), name: 'New Catageory' }))
+          }}
+        />
       </View>
     </View>
   );
@@ -28,18 +46,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    position: 'relative'
+    position: 'relative',
+    paddingHorizontal: wp(20),
+    paddingVertical: hp(10)
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: 0,
+    bottom: hp(20),
     width: '90%'
   },
   note: {
     fontSize: 12,
     marginTop: 10,
     color: 'gray',
-  },
+  }
 });
 
 export default Categories;

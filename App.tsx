@@ -1,6 +1,7 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
+import { NativeBaseProvider } from 'native-base';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { store } from './src/store/store';
@@ -11,9 +12,9 @@ function App(): JSX.Element {
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <SafeAreaView style={styles.container}>
+        <NativeBaseProvider>
           <Navigator />
-        </SafeAreaView>
+        </NativeBaseProvider>
       </GestureHandlerRootView>
     </Provider>
   );
