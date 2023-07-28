@@ -59,7 +59,7 @@ const CategoryComponent: React.FC<CategoryTypes> = ({
     dispatch(deleteCategory(id))
   }
 
-  const updateCategeory = (id: string, key: string, value: any) => {
+  const updateCategeory = (id: string, key: keyof Category, value: any) => {
     dispatch(updateCategory({ id, key, value }))
   }
 
