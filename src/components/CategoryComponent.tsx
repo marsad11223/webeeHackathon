@@ -11,10 +11,10 @@ type CategoryTypes = {
   item: Category
 };
 
-
-function TypesPopover({ onPress, children }: { onPress: () => void, children: React.ReactNode }) {
+function TypesPopover({ onPress, children }: { onPress: () => void, children: any }) {
   const [position] = useState("auto");
   const [isOpen, setIsOpen] = useState(false);
+
   return <Box w="100%" alignItems="center">
     <VStack space={6} alignSelf="flex-start" w="100%">
       <Popover // @ts-ignore
@@ -46,8 +46,7 @@ const CategoryComponent: React.FC<CategoryTypes> = ({
   item,
 }) => {
 
-  const { id, name, ...rest } = item;
-
+  const { id, name, attributes } = item;
 
   return (
     <View style={styles.container}>
@@ -58,7 +57,7 @@ const CategoryComponent: React.FC<CategoryTypes> = ({
         width={'100%'}
       />
 
-      {Object.keys(rest).map(key => (
+      {attributes.map(attribute => (
         <View style={{
           flexDirection: 'row',
           alignItems: 'center',
@@ -66,15 +65,15 @@ const CategoryComponent: React.FC<CategoryTypes> = ({
           marginVertical: 10
         }}>
           <InputField
-            key={key}
+            key={attribute.id}
             onChange={() => { }}
-            value={item[key].toString()}
+            value={attribute.name}
             width={'60%'}
           />
 
           <View>
             <TypesPopover onPress={() => { }}>
-              <Text> {types[typeof item[key].toString()]}</Text>
+              <Text> {types[typeof attribute.type]}</Text>
             </TypesPopover>
           </View>
           <Button

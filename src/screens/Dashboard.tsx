@@ -11,8 +11,6 @@ const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const { navigate } = useNavigate();
 
-  console.log(categories);
-
   useEffect(() => {
     // dispatch(createCategory({ name: 'testing', id: 12 }))
   }, [])

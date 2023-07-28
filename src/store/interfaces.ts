@@ -6,10 +6,16 @@ export interface RootState {
   };
 }
 
+export interface Attribute {
+  id: string;
+  name: string;
+  type: string;
+}
+
 export interface Category {
   id: string;
   name: string;
-  [key: string]: Date | string | boolean | number;
+  attributes: Attribute[];
 }
 
 export interface CategoryState {

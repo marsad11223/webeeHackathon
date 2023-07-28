@@ -25,6 +25,7 @@ const categorySlice = createSlice({
     },
     createCategory: (state, action: PayloadAction<Category>) => {
       const newCategory = action.payload;
+
       if (!state.categories.some((category) => category.id === newCategory.id)) {
         state.categories.push(newCategory);
       }

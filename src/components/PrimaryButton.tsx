@@ -12,8 +12,6 @@ const PrimaryButton: React.FC<PrimaryButtonTypes> = ({
   title = '',
 }) => {
 
-  console.log('onPress', onPress);
-
   return (
     <Button
       style={styles.container}

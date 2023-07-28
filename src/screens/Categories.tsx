@@ -34,7 +34,7 @@ const Categories: React.FC = () => {
         <PrimaryButton
           title={'ADD A CATEGEORY'}
           onPress={() => {
-            dispatch(createCategory({ id: getId(), name: 'New Catageory' }))
+            dispatch(createCategory({ id: getId(), name: 'New Catageory', attributes: [] }))
           }}
         />
       </View>
