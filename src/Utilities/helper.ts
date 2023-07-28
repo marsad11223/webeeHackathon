@@ -31,7 +31,6 @@ export const getTitle = (titleField: string, attributes: Attribute[]) => {
   }
 }
 
-
 export const createItem = (attributes: Attribute[]): Item => {
   const item: Item = { id: getId() };
   attributes.forEach(attr => {

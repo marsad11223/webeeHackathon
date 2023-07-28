@@ -8,6 +8,7 @@ import { Attribute, Category, Item } from '../store/interfaces';
 import { useRoute } from '@react-navigation/native';
 import ItemComponent from '../components/ItemComponent';
 import { addItem } from '../store/reducers/categoryReducer';
+
 interface RouteParams {
   categoryId: string;
 }
