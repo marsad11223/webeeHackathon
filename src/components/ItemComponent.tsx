@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { View, Input, Switch } from 'native-base';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from 'moment';
 
 import { useAppDispatch } from '../store/hooks';
 import { Category, Item, Attribute } from '../store/interfaces';
-import { getId, getTitle, hp } from '../utilities/helper';
-import { updateItem } from '../store/reducers/categoryReducer';
-import moment from 'moment';
+import { getTitle, hp } from '../utilities/helper';
+import { updateItem, deleteItem } from '../store/reducers/categoryReducer';
+import PrimaryButton from './PrimaryButton';
 
 type ItemTypes = {
   item: Item,
@@ -34,6 +35,14 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
   const handleConfirm = (date: Date) => {
     setDate(moment(date).format('MM.DD.YYYY'));
     hideDatePicker();
+  };
+
+  const handleRemove = () => {
+    if (category?.id) {
+      dispatch(deleteItem({ categoryId: category.id, itemId: item.id }))
+    } else {
+      console.log('No catageory found');
+    }
   };
 
   const updateField = (key: string, value: string | boolean | Date | number) => {
@@ -102,7 +111,11 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
           </View>
         );
       })}
-
+      <PrimaryButton
+        title={'Remove'}
+        onPress={handleRemove}
+        backgroundColor='red.500'
+      />
     </View >
   );
 };

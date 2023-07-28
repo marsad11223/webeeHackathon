@@ -117,6 +117,17 @@ const categorySlice = createSlice({
         state.categories[categoryIndex].items[itemIndex] = { ...item, [itemKey]: itemValue };
       }
     },
+    deleteItem: (
+      state,
+      action: PayloadAction<{ categoryId: string, itemId: string }>
+    ) => {
+      const { categoryId, itemId } = action.payload;
+      const categoryIndex = state.categories.findIndex((category) => category.id === categoryId);
+      if (categoryIndex >= 0) {
+        const items = state.categories[categoryIndex].items.filter(item => item.id !== itemId);
+        state.categories[categoryIndex].items = items;
+      }
+    },
   },
 });
 
@@ -131,7 +142,8 @@ export const {
   deleteAttribute,
   updateAttribute,
   addItem,
-  updateItem
+  updateItem,
+  deleteItem
 } = categorySlice.actions;
 
 export default categorySlice.reducer;
