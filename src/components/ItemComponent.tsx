@@ -19,7 +19,15 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
 
   const dispatch = useAppDispatch();
   const title = category ? getTitle(category?.titleField, attributes) : '';
-  console.log(item);
+
+  const updateField = (key: string, value: string | boolean | Date | number) => {
+    dispatch(updateItem({
+      categoryId: category?.id || '',
+      itemIndex: index,
+      itemKey: key,
+      itemValue: value
+    }))
+  }
 
   const getInputField = (type: string, key: string) => {
     if (type === 'string') {
@@ -27,12 +35,7 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
         size={'lg'}
         variant="filled"
         onChangeText={e => {
-          dispatch(updateItem({
-            categoryId: category?.id || '',
-            itemIndex: index,
-            itemKey: key,
-            itemValue: e
-          }))
+          updateField(key, e)
         }}
       />
     } else if (type === 'number') {
@@ -41,12 +44,7 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
         variant="filled"
         keyboardType='numeric'
         onChangeText={e => {
-          dispatch(updateItem({
-            categoryId: category?.id || '',
-            itemIndex: index,
-            itemKey: key,
-            itemValue: parseFloat(e)
-          }))
+          updateField(key, parseFloat(e))
         }}
       />
     } else if (type === 'boolean') {
@@ -54,12 +52,7 @@ const ItemComponent: React.FC<ItemTypes> = ({ item, category, attributes, index 
       return <Switch
         value={boolValue}
         onToggle={e => {
-          dispatch(updateItem({
-            categoryId: category?.id || '',
-            itemIndex: index,
-            itemKey: key,
-            itemValue: e
-          }))
+          updateField(key, e)
         }}
       />
     }
@@ -98,7 +91,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 12,
     marginBottom: 7,
-
   },
 
 });
