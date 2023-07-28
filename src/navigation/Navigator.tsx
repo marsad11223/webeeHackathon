@@ -16,9 +16,14 @@ function Navigator() {
       <Drawer.Navigator initialRouteName="Dashboard">
         <Drawer.Screen name="Dashboard" component={Dashboard} />
         <Drawer.Screen name="Categories" component={Categories} />
-        {categories.map((Catageory) => {
+        {categories.map((Catageory, index) => {
           return (
-            <Drawer.Screen name={Catageory.name || 'UNNAME CATEGEORY'} component={Items} initialParams={{ category: Catageory }} />
+            <Drawer.Screen
+              name={`${index + 1}. ${Catageory.name}` || 'UNNAME CATEGEORY'}
+              component={Items}
+              initialParams={{ categoryId: Catageory.id }}
+              key={index}
+            />
           )
         })}
       </Drawer.Navigator>

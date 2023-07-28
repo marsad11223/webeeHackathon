@@ -6,7 +6,7 @@ import PrimaryButton from './PrimaryButton';
 import TypesPopover from './TypesPopover';
 import InputField from './InputField';
 import { useAppDispatch } from '../store/hooks';
-import { getId, types } from '../utilities/helper';
+import { getId, getTitle, types } from '../utilities/helper';
 import { Category } from '../store/interfaces';
 import {
   addAttribute,
@@ -26,15 +26,6 @@ const CategoryComponent: React.FC<CategoryTypes> = ({
 
   const { id, name, titleField, attributes } = item;
   const dispatch = useAppDispatch();
-
-  const getTitle = () => {
-    const titleAttribute = attributes.find((attribute) => attribute.id === titleField);
-    if (titleAttribute) {
-      return titleAttribute?.name !== '' ? titleAttribute.name : 'UNNAMED FIELD';
-    } else {
-      return 'UNNAMED FIELD';
-    }
-  }
 
   const updateField = (
     id: string,
@@ -113,7 +104,7 @@ const CategoryComponent: React.FC<CategoryTypes> = ({
         onPress={(type: string) => {
           updateCategeory(id, 'titleField', type)
         }}>
-        <PrimaryButton title={`TITLE FIELD: ${getTitle()}`} />
+        <PrimaryButton title={`TITLE FIELD: ${getTitle(titleField, attributes)}`} />
       </TypesPopover>
 
       <TypesPopover

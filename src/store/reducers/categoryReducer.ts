@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Attribute, Category, CategoryState } from '../interfaces';
+import { Attribute, Category, CategoryState, Item } from '../interfaces';
 
 const initialState: CategoryState = {
   categories: [],
@@ -76,6 +76,26 @@ const categorySlice = createSlice({
         state.categories[categoryIndex] = { ...category, attributes };
       }
     },
+    addItem: (state, action: PayloadAction<{ categoryId: string, item: Item }>) => {
+      const { categoryId, item } = action.payload;
+      const categoryIndex = state.categories.findIndex((category) => category.id === categoryId);
+      if (categoryIndex >= 0) {
+        const category = state.categories[categoryIndex];
+        const items = [...category.items, item];
+        state.categories[categoryIndex] = { ...category, items };
+      }
+    },
+    updateItem: (
+      state,
+      action: PayloadAction<{ categoryId: string, itemIndex: number, itemKey: string, itemValue: string | boolean | Date | number }>
+    ) => {
+      const { categoryId, itemKey, itemValue, itemIndex } = action.payload;
+      const categoryIndex = state.categories.findIndex((category) => category.id === categoryId);
+      if (categoryIndex >= 0) {
+        const item = state.categories[categoryIndex].items[itemIndex];
+        state.categories[categoryIndex].items[itemIndex] = { ...item, [itemKey]: itemValue };
+      }
+    },
   },
 });
 
@@ -88,7 +108,9 @@ export const {
   deleteCategory,
   addAttribute,
   deleteAttribute,
-  updateAttribute
+  updateAttribute,
+  addItem,
+  updateItem
 } = categorySlice.actions;
 
 export default categorySlice.reducer;

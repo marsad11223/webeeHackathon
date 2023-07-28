@@ -10,11 +10,16 @@ export interface Attribute {
   name: string;
   type: string;
 }
+export interface Item {
+  id: string,
+  [key: string]: string | number | boolean | Date;
+}
 export interface Category {
   id: string;
   name: string;
   titleField: string;
   attributes: Attribute[];
+  items: Item[];
 }
 export interface CategoryState {
   categories: Category[];

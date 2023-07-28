@@ -39,7 +39,8 @@ const Categories: React.FC = () => {
               id: getId(),
               name: 'New Catageory',
               attributes: [{ id: attributeId, type: 'string', name: '' }],
-              titleField: attributeId
+              titleField: attributeId,
+              items: [],
             }))
           }}
         />
