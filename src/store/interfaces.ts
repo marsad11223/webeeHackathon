@@ -26,3 +26,7 @@ export interface CategoryState {
   loading: boolean;
   error: string | null;
 }
+
+export interface Type {
+  [key: string]: string;
+}
