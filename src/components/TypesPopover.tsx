@@ -20,7 +20,7 @@ const TypesPopover = ({
   return <Box w="100%" alignItems="center" >
     <VStack space={6} alignSelf="flex-start" w="100%">
       <Popover // @ts-ignore
-        placement={undefined}
+        placement={'bottom'}
         trigger={triggerProps => {
           return <TouchableOpacity
             {...triggerProps}
